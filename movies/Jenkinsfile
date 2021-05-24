@@ -71,14 +71,7 @@ pipeline {
                         sleep 5
                         oc new-build java:8 --name=${APP_NAME} --binary=true -n ${DEV_PROJECT}
                    '''
-		script {
-		    openshift.withProject( "${STAGE_PROJECT}" ) {
-			def deployment = openshift.selector("dc", "${APP_NAME}").rollout()  openshift.selector("dc", "${APP_NAME}").related('pods').untilEach(1) {
-			return (it.object().status.phase == "Running") 
-			}
-		    }
-		}
-
+		
                 echo '### Creating a new app in DEV env ###'
                 script {
                     openshift.withCluster() {
